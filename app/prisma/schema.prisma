@@ -30,18 +30,16 @@ model Account {
     userId            String  @db.ObjectId
     type              String
     provider          String
-    profiderAccountId String
+    providerAccountId String 
     refresh_token     String?
     access_token      String?
-    exires_at         String?
+    expires_at        Int?
     token_type        String?
     scope             String?
     id_token          String? @db.String
     session_state     String?
-
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@unique([provider, profiderAccountId])
+    @@unique([provider, providerAccountId])
 }
 
 model Listing {
