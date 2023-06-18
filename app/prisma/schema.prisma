@@ -20,7 +20,6 @@ model User {
     createdAt      DateTime  @default(now())
     updatedAt      DateTime  @default(now())
     favoriteIds    String[]  @db.ObjectId
-
     accounts     Account[]
     listings     Listing[]
     reservations Reservation[]
