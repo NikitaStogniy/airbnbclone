@@ -20,6 +20,7 @@ model User {
     createdAt      DateTime  @default(now())
     updatedAt      DateTime  @default(now())
     favoriteIds    String[]  @db.ObjectId
+
     accounts     Account[]
     listings     Listing[]
     reservations Reservation[]
@@ -30,16 +31,18 @@ model Account {
     userId            String  @db.ObjectId
     type              String
     provider          String
-    providerAccountId String 
+    profiderAccountId String
     refresh_token     String?
     access_token      String?
-    expires_at        Int?
+    exires_at         String?
     token_type        String?
     scope             String?
     id_token          String? @db.String
     session_state     String?
+
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    @@unique([provider, providerAccountId])
+
+    @@unique([provider, profiderAccountId])
 }
 
 model Listing {
