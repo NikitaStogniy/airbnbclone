@@ -16,10 +16,13 @@ import Heading from './Heading';
 import Input from '../Inputs/Input';
 import { toast } from 'react-hot-toast';
 import Button from '../Button/Button';
+import { signIn } from 'next-auth/react';
+import useLoginModal from '@/app/hooks/useLoginModal';
 
 const RegisterModal = () => {
-	const registerModal = useRegisterModal()
-	const [isLoading, setIsLoading] = useState(false)
+	const registerModal = useRegisterModal();
+	const loginModal = useLoginModal();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const{
 		register,
@@ -38,7 +41,7 @@ const RegisterModal = () => {
 	const onSubmit: SubmitHandler<FieldValues> = (data) =>{
 		setIsLoading(true);
 
-		axios.post('/api/register', data)
+		axios.post('/api/auth/register', data)
 		.then(()=>{
 			registerModal.onClose();
 		})
@@ -49,6 +52,11 @@ const RegisterModal = () => {
 			setIsLoading(false);
 		})
 	}
+
+	const toggle = useCallback(()=>{
+		registerModal.onClose();
+		loginModal.onOpen();
+	}, [loginModal, registerModal])
 
 	const bodyContent = (
 		<div className='flex flex-col gap-4'>
@@ -83,14 +91,14 @@ const RegisterModal = () => {
 	const footerContent = (
 		<div className='flex flex-col gap-4 mt-3'>
 			<hr/>
-			<Button outline label="Continue with Google" icon={FcGoogle} onClick={()=>{}}/>
-			<Button outline label="Continue with Github" icon={AiFillGithub} onClick={()=>{}}/>
+			<Button outline label="Continue with Google" icon={FcGoogle} onClick={()=>signIn('google')}/>
+			<Button outline label="Continue with Github" icon={AiFillGithub} onClick={()=>signIn('github')}/>
 			<div className='text-neutral-500 text-center mt-4 font-light'>
 				<div className='flex flex-row justify-center items-center gap-2'>
 					<div>
 						Already have an account?
 					</div>
-					<div onClick={registerModal.onClose} className='text-neutral-800 cursor-pointer hover:underline'>
+					<div onClick={toggle} className='text-neutral-800 cursor-pointer hover:underline'>
 						Log in
 					</div>
 				</div>

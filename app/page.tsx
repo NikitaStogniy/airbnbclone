@@ -1,5 +1,54 @@
-export default function Home() {
-  return (
-	<div className='text-rose-500 text-2xl'>Hello Airbnb!</div>
-  )
+import getCurrentUser from "./actions/getCurrentUser";
+import getListings, { IListingParams } from "./actions/getListings";
+import ClientOnly from "./components/ClientOnly";
+import Container from "./components/Container";
+import EmptyState from "./components/EmptyState/EmptyState";
+import ListingCard from "./components/Listings/ListingCard";
+import { SafeListing } from "./types";
+
+interface HomeProps {
+	searchParams: IListingParams;
 }
+
+const Home = async ({ searchParams }: HomeProps) => {
+	const listings = await getListings(searchParams);
+	const currentUser = await getCurrentUser();
+
+	if (listings.length == 0) {
+		return (
+			<ClientOnly>
+				<EmptyState showReset />
+			</ClientOnly>
+		);
+	}
+
+	return (
+		<ClientOnly>
+			<Container>
+				<div
+					className="pt-24
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+          2xl:grid-cols-6
+          gap-8"
+				>
+					{listings.map((listing: SafeListing) => {
+						return (
+							<ListingCard
+								currentUser={currentUser}
+								key={listing.id}
+								data={listing}
+								disabled={false}
+							/>
+						);
+					})}
+				</div>
+			</Container>
+		</ClientOnly>
+	);
+};
+export default Home;
