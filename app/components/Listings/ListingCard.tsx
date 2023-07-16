@@ -2,7 +2,6 @@
 
 import useCountries from "@/app/hooks/useCountries";
 import { SafeUser, SafeListing, SafeReservation } from "@/app/types";
-import { Listing, Reservation } from "@prisma/client";
 import format from "date-fns/format";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
