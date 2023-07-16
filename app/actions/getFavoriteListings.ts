@@ -15,7 +15,7 @@ export default async function getFavoriteListings() {
                 }
             }
         })
-
+//Fuck type error
         const safeListings = favorites.map((favorite:any)=>({
             ...favorite,
             createdAt: favorite.createdAt.toISOString(),
